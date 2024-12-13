@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgis/postgis:latest
+    container_name: tripcom_postgis
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: tripcom_data
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tripcom_scraper
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@db:5432/tripcom_data
+    command: ["scrapy", "crawl", "tripcom_spider"]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: tripcom_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@tripcom.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:
