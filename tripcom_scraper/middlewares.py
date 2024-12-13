@@ -4,6 +4,8 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.utils.request import RequestFingerprinter
+from scrapy_splash.dupefilter import SplashAwareDupeFilter
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -101,3 +103,9 @@ class TripcomScraperDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+
+class CustomSplashDupeFilter(SplashAwareDupeFilter):
+    def request_fingerprint(self, request):
+        # Use the RequestFingerprinter instead of the removed request_fingerprint
+        return RequestFingerprinter().fingerprint(request)
