@@ -23,6 +23,7 @@ services:
       - .:/app
     environment:
       DATABASE_URL: postgresql://myuser:mypassword@db:5432/tripcom_data
+      DOCKER_ENV: true   # Added environment variable
     command: ["scrapy", "crawl", "tripcom_spider"]
 
   pgadmin:
