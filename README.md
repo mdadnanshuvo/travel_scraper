@@ -58,11 +58,7 @@ TRAVEL_SCRAPER/
 │   ├── middlewares.py           # Custom middlewares
 │   ├── models.py                # SQLAlchemy models for database
 │   ├── __init__.py
-│   └── settings.py              # Scrapy settings
-├── map.html                     # HTML for testing
-├── map2.html                    # Another test HTML
-├── rooms.html                   # Room types test HTML
-├── structure.html               # Structure file for testing
+│   └── settings.py              # Scrapy settings           # Structure file for testing
 ├── docker-compose.yml           # Docker setup for scraper, DB, and pgAdmin
 ├── Dockerfile                   # Dockerfile for the scraper service
 ├── requirements.txt             # Python dependencies
@@ -81,10 +77,11 @@ Make sure you have the following installed:
 ---
 
 ## Setup Instructions
+
 1. **Clone the repository**:
    ```bash
-   git clone <your-repo-url>
-   cd TRAVEL_SCRAPER
+   git clone https://github.com/mdadnanshuvo/travel_scraper.git
+   cd travel_scraper
    ```
 
 2. **Install dependencies**:
@@ -98,14 +95,14 @@ Make sure you have the following installed:
    docker-compose up --build
    ```
    This will:
-   - Start the PostgreSQL database on port `5433`.
+   - Start the PostgreSQL database on port `5432`.
    - Run the Scrapy spider container.
-   - Launch pgAdmin on port `5051`.
+   - Launch pgAdmin on port `5050`.
 
 4. **Database Configuration**:
    The database runs with the following credentials:
    - **Host**: `db`
-   - **Port**: `5433`
+   - **Port**: `5432`
    - **User**: `myuser`
    - **Password**: `mypassword`
    - **Database**: `tripcom_data`
@@ -115,6 +112,7 @@ Make sure you have the following installed:
 ---
 
 ## How to Run
+
 1. **Run the Scrapy Spider**:
    To start the scraping process:
    ```bash
@@ -122,7 +120,7 @@ Make sure you have the following installed:
    ```
 
 2. **Access pgAdmin**:
-   Open pgAdmin at [http://localhost:5051](http://localhost:5051) and log in:
+   Open pgAdmin at [http://localhost:5050](http://localhost:5050) and log in:
    - **Email**: `admin@tripcom.com`
    - **Password**: `admin`
 
@@ -152,11 +150,12 @@ The following table structure is used:
 ---
 
 ## Acceptance Criteria
-- [x] Use Scrapy Spider for scraping.
-- [x] Store data into PostgreSQL using SQLAlchemy.
-- [x] Automatically create database tables and save images locally.
-- [x] Provide a public repository with documentation.
-- [x] Code coverage of at least 60%.
+1. Must use Scrapy Spider.
+2. Store data into a PostgreSQL database using SQLAlchemy.
+3. Tables must create automatically, and images must store in a directory created automatically. Image references must be stored in the database.
+4. Must send a public GitHub repository link containing the project with a proper `README.md`.
+5. Code coverage must be at least **60%**.
+6. Manual validation of output data is required (no cheating).
 
 ---
 
@@ -174,15 +173,11 @@ The following table structure is used:
 
 ---
 
-## Author
-**Your Name**  
-Email: yourname@example.com  
-LinkedIn: [Your LinkedIn Profile](#)
+
 
 ---
 
-## License
-This project is licensed under the MIT License.
+
 
 ---
 
