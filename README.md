@@ -149,15 +149,7 @@ The following table structure is used:
 
 ---
 
-## Acceptance Criteria
-1. Must use Scrapy Spider.
-2. Store data into a PostgreSQL database using SQLAlchemy.
-3. Tables must create automatically, and images must store in a directory created automatically. Image references must be stored in the database.
-4. Must send a public GitHub repository link containing the project with a proper `README.md`.
-5. Code coverage must be at least **60%**.
-6. Manual validation of output data is required (no cheating).
 
----
 
 ## Testing
 1. **Unit Tests**: Ensure the data pipeline and models work correctly.
