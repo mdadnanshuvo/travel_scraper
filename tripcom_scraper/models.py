@@ -1,50 +1,40 @@
-from sqlalchemy import Column, Integer, String, Float, create_engine
-from geoalchemy2 import Geometry
+from sqlalchemy import create_engine, Column, String, Float, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from geoalchemy2 import Geometry
 import os
 
+# Base class for models
 Base = declarative_base()
 
+# Property model
 class Property(Base):
     __tablename__ = 'properties'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False)
+    id = Column(String, primary_key=True, index=True)
+    title = Column(String(255), nullable=True)
     rating = Column(Float, nullable=True)
-    location = Column(String, nullable=True)
-    geom = Column(Geometry('POINT'), nullable=False)  # PostGIS geometry column
-    room_type = Column(String, nullable=True)
-    price = Column(Float, nullable=True)
-    image_path = Column(String, nullable=True)  # Store relative path to images
+    location = Column(String(255), nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    geom = Column(Geometry('POINT', srid=4326), nullable=True)  # Spatial data
+    price = Column(String(255), nullable=True)
+    image_url = Column(String(255), nullable=True)
+    city_id = Column(String(255), nullable=True)
+    created_at = Column(String, default=func.now())
+    updated_at = Column(String, onupdate=func.now())
 
-# Configure database URL
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://myuser:mypassword@localhost:5432/tripcom_data")
+# Function to get database engine
+def get_database_engine():
+    database_url = os.getenv("DATABASE_URL", "postgresql://myuser:mypassword@localhost:5432/tripcom_data")
+    return create_engine(database_url)
 
-# Database connection setup
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
+# Create a shared engine
+engine = get_database_engine()
 
+# Create a session factory
+Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Function to create tables
 def create_tables():
-    """Create the tables if they don't exist."""
-    Base.metadata.create_all(engine)  # Create the tables in the DB
-    print("Tables created successfully.")
-
-def insert_properties(properties):
-    """Yield each property after adding it to the database."""
-    session = Session()
-    
-    try:
-        for property in properties:
-            session.add(property)  # Add property to the session
-            yield property  # Yield property for processing
-        
-        session.commit()  # Commit after all properties are processed
-    except Exception as e:
-        session.rollback()  # Rollback in case of error
-        print(f"Error inserting properties: {e}")
-    finally:
-        session.close()  # Close the session
-
-# Ensure the tables are created automatically when the app starts
-create_tables()
+    Base.metadata.create_all(engine)

@@ -22,8 +22,7 @@ DOWNLOADER_MIDDLEWARES = {
 }
 
 ITEM_PIPELINES = {
-    'scrapy.pipelines.images.ImagesPipeline': 1,
-    'tripcom_scraper.pipelines.CustomImagesPipeline': 2,
+
     'tripcom_scraper.pipelines.TripcomScraperPipeline': 3,
 }
 
